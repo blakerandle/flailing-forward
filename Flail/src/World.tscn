@@ -1,0 +1,124 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://src/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/SpikeBall.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/fonts/EastSeaDokdo_128.tres" type="DynamicFont" id=3]
+[ext_resource path="res://src/World.gd" type="Script" id=4]
+[ext_resource path="res://src/PauseManager.gd" type="Script" id=5]
+[ext_resource path="res://assets/fonts/EastSeaDokdo-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/images/background.png" type="Texture" id=7]
+[ext_resource path="res://assets/audio/Red Curtain.ogg" type="AudioStream" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 1256.8, 55.7152 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 45.0226, 572.885 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 48
+font_data = ExtResource( 6 )
+
+[node name="World" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Background" type="Sprite" parent="."]
+position = Vector2( 960, 540 )
+z_index = -2
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Slimes" type="Node" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 947.26, 586.38 )
+
+[node name="SpikeBall" parent="." instance=ExtResource( 2 )]
+position = Vector2( 945.624, 392.873 )
+
+[node name="TestWalls" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TestWalls"]
+position = Vector2( 922.029, -26.2121 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="TestWalls"]
+position = Vector2( 933.516, 1048.38 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="TestWalls"]
+position = Vector2( -17.4952, 540.265 )
+shape = SubResource( 2 )
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="TestWalls"]
+position = Vector2( 1937.55, 533.819 )
+shape = SubResource( 2 )
+
+[node name="EnemySpawn" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
+
+[node name="PauseManager" type="Node" parent="."]
+pause_mode = 2
+script = ExtResource( 5 )
+
+[node name="UI" type="Node" parent="."]
+
+[node name="InitialFade" type="ColorRect" parent="UI"]
+margin_left = -55.5713
+margin_top = -95.6342
+margin_right = 1973.43
+margin_bottom = 1200.37
+color = Color( 0, 0, 0, 0.188235 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="HoldSpace" type="Label" parent="UI"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -388.5
+margin_top = 207.5
+margin_right = 388.5
+margin_bottom = 336.5
+custom_fonts/font = ExtResource( 3 )
+text = "Hold Space to Start"
+align = 1
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="UI"]
+margin_left = -121.585
+margin_top = -112.0
+margin_right = 2024.42
+margin_bottom = 1210.0
+color = Color( 0.243137, 0.027451, 0.027451, 0 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Points" type="Label" parent="UI"]
+margin_left = 80.8237
+margin_top = 89.6505
+margin_right = 260.824
+margin_bottom = 138.651
+custom_fonts/font = SubResource( 3 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+volume_db = -15.0
+[connection signal="died" from="Player" to="." method="_on_Player_died"]
+[connection signal="killed_enemy" from="SpikeBall" to="Player" method="_on_SpikeBall_killed_enemy"]
+[connection signal="timeout" from="EnemySpawn" to="." method="_on_EnemySpawn_timeout"]

@@ -1,0 +1,159 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://src/fonts/EastSeaDokdo_128.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/images/rectangle.png" type="Texture" id=2]
+[ext_resource path="res://assets/images/Space.png" type="Texture" id=3]
+[ext_resource path="res://assets/images/Move.png" type="Texture" id=4]
+[ext_resource path="res://assets/fonts/EastSeaDokdo-Regular.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://assets/fonts/OpenSans-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://src/TitleScreen.gd" type="Script" id=7]
+[ext_resource path="res://assets/images/titlebg.png" type="Texture" id=8]
+[ext_resource path="res://assets/audio/Menu Music.ogg" type="AudioStream" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 32
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 212
+font_data = ExtResource( 5 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "fade"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Fade:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0, 0, 0 ), Color( 0, 0, 0, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MenuMusic:volume_db")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -10.0, -40.0 ]
+}
+
+[node name="TitleScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.27451 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Credits" type="Label" parent="."]
+margin_left = 14.0
+margin_top = 982.05
+margin_right = 1694.0
+margin_bottom = 1075.05
+custom_fonts/font = SubResource( 1 )
+text = "Made by Blake Randle and Jessica Lieu in 36 hours for SB Hacks VII
+Music - A House In A Forest and Red Curtain by HorrorPen"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 498.0
+margin_top = 285.0
+margin_right = 1010.0
+margin_bottom = 797.0
+rect_scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+margin_left = 1014.0
+margin_top = 285.0
+margin_right = 1526.0
+margin_bottom = 797.0
+rect_scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 3 )
+
+[node name="Title" type="Label" parent="."]
+margin_left = 120.0
+margin_top = 49.0
+margin_right = 1800.0
+margin_bottom = 306.0
+custom_fonts/font = SubResource( 2 )
+text = "Flailing Forward"
+align = 1
+
+[node name="StartButton" type="TextureButton" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -198.0
+margin_top = -262.0
+margin_right = 298.0
+margin_bottom = -122.0
+rect_min_size = Vector2( 0, 140 )
+rect_scale = Vector2( 0.8, 0.8 )
+texture_normal = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="StartButton"]
+margin_right = 495.0
+margin_bottom = 261.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Start
+"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeTransition" type="AnimationPlayer" parent="."]
+anims/fade = SubResource( 3 )
+
+[node name="MenuMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -10.0
+autoplay = true
+[connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="animation_finished" from="FadeTransition" to="." method="_on_FadeTransition_animation_finished"]
